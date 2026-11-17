@@ -4,12 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>منظومة الرصد الإعلامي</title>
-<meta name="description" content="منظومة الرصد الإعلامي — وزارة الكهرباء والماء والطاقة المتجددة">
-
-<!-- ===== الرابط الوحيد الذي قد تحتاج تغييره: رابط منظومتك المنتهي بـ /exec ===== -->
-<!-- للعرض بدون تسجيل دخول (قراءة فقط) استبدله برابط الشاشة المنتهي بـ ?screen=... -->
-<meta name="app-url" content="https://script.google.com/macros/s/AKfycbyBTe3i9a7HfzrZuMeFePODBUF1NLWcNaf1ne0TpK4kMl1PLOZrRR20ml7mF7Db0nSZBw/exec">
-
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0D2668">
 <meta name="mobile-web-app-capable" content="yes">
@@ -18,41 +12,32 @@
 <meta name="apple-mobile-web-app-title" content="الرصد الإعلامي">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <style>
   html,body{margin:0;height:100%;font-family:-apple-system,"Segoe UI",Tahoma,sans-serif}
-  body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;
-    background:radial-gradient(120% 120% at 50% 30%,#1B3A86 0,#0D2668 60%,#071645 100%);color:#fff;
-    padding:max(28px,env(safe-area-inset-top)) 24px max(28px,env(safe-area-inset-bottom));text-align:center;min-height:100vh}
+  body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;min-height:100vh;
+    background:radial-gradient(120% 120% at 50% 30%,#1B3A86 0,#0D2668 60%,#071645 100%);color:#fff;text-align:center;
+    padding:max(28px,env(safe-area-inset-top)) 24px max(28px,env(safe-area-inset-bottom))}
   .bar{position:fixed;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#95CDB2,#24B7C5,#2D76B1,#3B569F)}
   img{width:min(44vw,190px);height:auto;filter:drop-shadow(0 8px 24px rgba(0,0,0,.35))}
   h1{margin:0;font-size:clamp(19px,5.4vw,27px);font-weight:800}
   .ring{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.22);border-top-color:#fff;animation:spin 1s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
-  p{margin:0;font-size:13.5px;color:rgba(255,255,255,.72)}
-  a.btn{display:none;margin-top:6px;background:#fff;color:#0D2668;font-weight:800;font-size:15px;text-decoration:none;padding:12px 26px;border-radius:12px}
+  a.btn{background:#fff;color:#0D2668;font-weight:800;font-size:16px;text-decoration:none;padding:13px 30px;border-radius:12px}
 </style>
 </head>
 <body>
 <div class="bar"></div>
 <img src="icon-512.png" alt="وزارة الكهرباء والماء والطاقة المتجددة">
 <h1>منظومة الرصد الإعلامي</h1>
-<div class="ring" id="ring"></div>
-<p id="msg">جارٍ فتح المنظومة…</p>
-<a class="btn" id="go">افتح المنظومة</a>
+<div class="ring"></div>
+<a class="btn" id="go" href="#">ادخل إلى المنظومة</a>
 <script>
-  var APP = document.querySelector('meta[name="app-url"]').content;
-  var go = document.getElementById('go');
-  go.href = APP;
-  if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(function(){}); }
-  // show a manual button as fallback in case auto-open is blocked
-  setTimeout(function(){
-    document.getElementById('ring').style.display = 'none';
-    document.getElementById('msg').textContent = 'اضغط للدخول إلى المنظومة';
-    go.style.display = 'inline-block';
-  }, 2600);
-  // auto-navigate to the system
-  setTimeout(function(){ try { window.location.replace(APP); } catch(e){ window.location.href = APP; } }, 900);
+  var APP = "https://script.google.com/macros/s/AKfycbyBTe3i9a7HfzrZuMeFePODBUF1NLWcNaf1ne0TpK4kMl1PLOZrRR20ml7mF7Db0nSZBw/exec";
+  document.getElementById('go').href = APP;
+  // remove any old cached service worker that may serve a stale page
+  try { if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(function(rs){ rs.forEach(function(r){ r.unregister(); }); }); } catch(e){}
+  try { if (window.caches && caches.keys) caches.keys().then(function(ks){ ks.forEach(function(k){ caches.delete(k); }); }); } catch(e){}
+  setTimeout(function(){ window.location.href = APP; }, 1100);
 </script>
 </body>
 </html>
